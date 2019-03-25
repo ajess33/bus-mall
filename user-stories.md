@@ -12,6 +12,7 @@
 - As a marketer I want the user to see three different products on the page so they can decide which one to vote on
 - As a marketer I want the user to be able to see what they voted on so they can see their favorite products
 - As a marketer I want all of our product images to be the same size to make each image have the same visibility
+- As a marketer I want the page to be styled so the voting experience is more enjoyable for the user
 
 ### User
 
