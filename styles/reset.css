@@ -3,8 +3,11 @@
    License: none (public domain)
 */
 
+body {
+  padding: 20px;
+}
+
 html,
-body,
 div,
 span,
 applet,
@@ -50,6 +53,7 @@ dl,
 dt,
 dd,
 ol,
+header,
 ul,
 li,
 fieldset,
@@ -98,7 +102,6 @@ details,
 figcaption,
 figure,
 footer,
-header,
 hgroup,
 menu,
 nav,
