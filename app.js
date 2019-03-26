@@ -58,8 +58,6 @@ function displayRandomProducts() {
 }
 displayRandomProducts();
 
-//! Check for duplicates
-
 function getRandomIndex() {
   var random1 = Math.floor(Math.random() * 20);
   var random2 = Math.floor(Math.random() * 20);
@@ -67,7 +65,6 @@ function getRandomIndex() {
   console.log(random1, random2, random3);
   console.log(random1 === random2);
 
-  // why doesn't this work?
   while (random1 === random2 || random2 === random3 || random1 === random3) {
     console.log(random1, random2, random2);
     random1 = Math.floor(Math.random() * 20);
@@ -83,13 +80,16 @@ function getRandomIndex() {
 var resultsList = document.getElementById('results-list');
 
 function displayResults() {
-  var imageNumber = 1;
   Product.all.forEach(function(image) {
+    var ratio = image.totalClicks / image.totalViews;
+    ratio.toFixed(3);
+    if (isNaN(ratio)) {
+      ratio = 'Never displayed!';
+    }
     var imageCount = document.createElement('li');
-    imageCount.textContent = `Image ${imageNumber} times clicked: ${
+    imageCount.textContent = `Image ${image.name} times clicked: ${
       image.totalClicks
-    }`;
-
+    } - ${ratio}`;
     resultsList.appendChild(imageCount);
   });
 }
