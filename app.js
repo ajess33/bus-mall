@@ -65,7 +65,6 @@ function getRandomIndex() {
   var random3 = Math.floor(Math.random() * 20);
 
   while (random1 === random2 || random2 === random3 || random1 === random3) {
-    console.log(random1, random2, random2);
     random1 = Math.floor(Math.random() * 20);
     random2 = Math.floor(Math.random() * 20);
     random3 = Math.floor(Math.random() * 20);
@@ -99,24 +98,44 @@ function displayResults() {
         {
           label: 'Voting Totals',
           backgroundColor: 'rgb(0, 210, 170)',
-          // borderColor: 'rgb(255, 99, 132)',
           data: dataArray
         }
       ]
     },
 
-    options: {}
+    options: {
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: '# of Votes',
+              fontColor: '#002620'
+            }
+          }
+        ]
+      }
+    }
   });
 
   var fav1 = document.getElementById('fav1');
   var fav2 = document.getElementById('fav2');
   var fav3 = document.getElementById('fav3');
 
-  dataArray.sort(function(a, b) {
-    return b - a;
+  // dataArray.sort(function(a, b) {
+  //   return b - a;
+  // });
+  var productsArr = [];
+  Product.all.forEach(function(image) {
+    productsArr.push(image);
   });
-
-  console.log(dataArray);
+  productsArr.sort(function(a, b) {
+    return b.totalClicks - a.totalClicks;
+  });
+  var topProductsArr = productsArr.slice(0, 3);
+  fav1.src = topProductsArr[0].imagePath;
+  fav2.src = topProductsArr[1].imagePath;
+  fav3.src = topProductsArr[2].imagePath;
 }
 
 // Define handleClicks function that takes in an event
