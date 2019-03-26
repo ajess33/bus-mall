@@ -5,35 +5,36 @@ var totalPageClicks = 0;
 Product.all = [];
 
 // Define Product constructor
-function Product(path) {
+function Product(path, name) {
   this.totalClicks = 0;
   this.totalViews = 0;
   this.imagePath = path;
+  this.name = name;
 
   // Define various products to be constructed and add to allProducts array
   Product.all.push(this);
 }
 
-var bagImg = new Product('img/bag.jpg');
-var bananaImg = new Product('img/banana.jpg');
-var bathroomImg = new Product('img/bathroom.jpg');
-var bootsImg = new Product('img/boots.jpg');
-var breakfastImg = new Product('img/breakfast.jpg');
-var bubblegumImg = new Product('img/bubblegum.jpg');
-var chairImg = new Product('img/chair.jpg');
-var cthulhuImg = new Product('img/cthulhu.jpg');
-var dogDuckImg = new Product('img/dog-duck.jpg');
-var dragonImg = new Product('img/dragon.jpg');
-var penImg = new Product('img/pen.jpg');
-var petSweepImg = new Product('img/pet-sweep.jpg');
-var scissorsImg = new Product('img/scissors.jpg');
-var sharkImg = new Product('img/shark.jpg');
-var sweepImg = new Product('img/sweep.png');
-var tauntaunImg = new Product('img/tauntaun.jpg');
-var unicornImg = new Product('img/unicorn.jpg');
-var usbImg = new Product('img/usb.gif');
-var waterCanImage = new Product('img/water-can.jpg');
-var wineImg = new Product('img/wine-glass.jpg');
+var bagImg = new Product('img/bag.jpg', 'bag');
+var bananaImg = new Product('img/banana.jpg', 'banana');
+var bathroomImg = new Product('img/bathroom.jpg', 'bathroomImg');
+var bootsImg = new Product('img/boots.jpg', 'boots');
+var breakfastImg = new Product('img/breakfast.jpg', 'breakfast');
+var bubblegumImg = new Product('img/bubblegum.jpg', 'bubblegum');
+var chairImg = new Product('img/chair.jpg', 'chair');
+var cthulhuImg = new Product('img/cthulhu.jpg', 'cthulhu');
+var dogDuckImg = new Product('img/dog-duck.jpg', 'dog');
+var dragonImg = new Product('img/dragon.jpg', 'dragon');
+var penImg = new Product('img/pen.jpg', 'pen');
+var petSweepImg = new Product('img/pet-sweep.jpg', 'pet');
+var scissorsImg = new Product('img/scissors.jpg', 'scissors');
+var sharkImg = new Product('img/shark.jpg', 'shark');
+var sweepImg = new Product('img/sweep.png', 'sweep');
+var tauntaunImg = new Product('img/tauntaun.jpg', 'tauntaun');
+var unicornImg = new Product('img/unicorn.jpg', 'unicorn');
+var usbImg = new Product('img/usb.gif', 'usb');
+var waterCanImage = new Product('img/water-can.jpg', 'watercan');
+var wineImg = new Product('img/wine-glass.jpg', 'wine');
 
 // Define displayRandomProduct
 var elImgOne = document.getElementById('image-one');
@@ -41,29 +42,56 @@ var elImgTwo = document.getElementById('image-two');
 var elImgThree = document.getElementById('image-three');
 
 function displayRandomProducts() {
-  var index = getRandomIndex();
-  elImgOne.src = Product.all[index[0]].imagePath;
-  Product.all[index[0]].totalViews += 1;
-  elImgTwo.src = Product.all[index[1]].imagePath;
-  Product.all[index[1]].totalViews += 1;
-  elImgThree.src = Product.all[getRandomIndex()[2]].imagePath;
-  Product.all[index[2]].totalViews += 1;
+  var random = getRandomIndex();
+
+  elImgOne.src = Product.all[random[0]].imagePath;
+  elImgOne.setAttribute('data-name', Product.all[random[0]].name);
+  Product.all[random[0]].totalViews += 1;
+
+  elImgTwo.src = Product.all[random[1]].imagePath;
+  elImgTwo.setAttribute('data-name', Product.all[random[1]].name);
+  Product.all[random[1]].totalViews += 1;
+
+  elImgThree.src = Product.all[random[2]].imagePath;
+  elImgThree.setAttribute('data-name', Product.all[random[2]].name);
+  Product.all[random[2]].totalViews += 1;
 }
 displayRandomProducts();
 
 //! Check for duplicates
+
 function getRandomIndex() {
-  var indexArr = [];
-  for (var i = 0; i < 3; i++) {
-    indexArr.push(Math.floor(Math.random() * 20));
+  var random1 = Math.floor(Math.random() * 20);
+  var random2 = Math.floor(Math.random() * 20);
+  var random3 = Math.floor(Math.random() * 20);
+
+  // why doesn't this work?
+  while (random1 === random2 || random2 === random3) {
+    getRandomIndex();
+    break;
   }
-  return indexArr;
+
+  return [random1, random2, random3];
 }
 
 // *Define displayResults function
 // - calculate clicks to view ratio
 // - get elements from DOM
 // - set text content of elements to results of your calc
+
+var resultsList = document.getElementById('results-list');
+
+function displayResults() {
+  var imageNumber = 1;
+  Product.all.forEach(function(image) {
+    var imageCount = document.createElement('li');
+    imageCount.textContent = `Image ${imageNumber} times clicked: ${
+      image.totalClicks
+    }`;
+
+    resultsList.appendChild(imageCount);
+  });
+}
 
 // *Define handleClicks function that takes in an event
 // - increment totalPageClicks
@@ -73,17 +101,24 @@ function getRandomIndex() {
 // - else if totalPageClicks != 25
 // - call displayRandomProduct
 
-// - add click event listener to products to calls handleClick
+function handleClick(e) {
+  totalPageClicks++;
+  if (totalPageClicks === 25) {
+    displayResults();
+  }
 
-// for (var i = 0; i < 3; i++) {
-//   index = Math.floor(Math.random() * 20);
-//   for (var j = 0; j < indexArr.length; j++) {
-//     if (index === indexArr[j]) {
-//       index = Math.floor(Math.random() * 20);
-//       indexArr.push(index);
-//     } else {
-//       indexArr.push(index);
-//     }
-//   }
-// }
-// return indexArr;
+  var imgClicked = e.target.attributes[0].nodeValue;
+
+  Product.all.forEach(function(image) {
+    if (imgClicked === image.name) {
+      image.totalClicks++;
+      console.log(image);
+    }
+  });
+  displayRandomProducts();
+}
+
+// add click event listener to products to calls handleClick
+elImgOne.addEventListener('click', handleClick);
+elImgTwo.addEventListener('click', handleClick);
+elImgThree.addEventListener('click', handleClick);
