@@ -64,21 +64,22 @@ function getRandomIndex() {
   var random1 = Math.floor(Math.random() * 20);
   var random2 = Math.floor(Math.random() * 20);
   var random3 = Math.floor(Math.random() * 20);
+  console.log(random1, random2, random3);
+  console.log(random1 === random2);
 
   // why doesn't this work?
-  while (random1 === random2 || random2 === random3) {
-    getRandomIndex();
-    break;
+  while (random1 === random2 || random2 === random3 || random1 === random3) {
+    console.log(random1, random2, random2);
+    random1 = Math.floor(Math.random() * 20);
+    random2 = Math.floor(Math.random() * 20);
+    random3 = Math.floor(Math.random() * 20);
   }
+  var randomArray = [random1, random2, random3];
 
-  return [random1, random2, random3];
+  return randomArray;
 }
 
-// *Define displayResults function
-// - calculate clicks to view ratio
-// - get elements from DOM
-// - set text content of elements to results of your calc
-
+// Define displayResults function
 var resultsList = document.getElementById('results-list');
 
 function displayResults() {
@@ -93,14 +94,7 @@ function displayResults() {
   });
 }
 
-// *Define handleClicks function that takes in an event
-// - increment totalPageClicks
-// - increment totalClicks on product that was clicked
-// - check if totalPageClicks > 25
-// - display results
-// - else if totalPageClicks != 25
-// - call displayRandomProduct
-
+// Define handleClicks function that takes in an event
 function handleClick(e) {
   totalPageClicks++;
   if (totalPageClicks === 25) {
