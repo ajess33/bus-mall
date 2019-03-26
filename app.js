@@ -105,6 +105,9 @@ function handleClick(e) {
   totalPageClicks++;
   if (totalPageClicks === 25) {
     displayResults();
+    elImgOne.style.pointerEvents = 'none';
+    elImgTwo.style.pointerEvents = 'none';
+    elImgThree.style.pointerEvents = 'none';
   }
 
   var imgClicked = e.target.attributes[0].nodeValue;
