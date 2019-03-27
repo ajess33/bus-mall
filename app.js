@@ -75,7 +75,6 @@ function getRandomIndex() {
 }
 
 // Define displayResults function
-
 function displayResults() {
   var resultsWrap = document.getElementById('results');
   resultsWrap.classList.remove('ghost');
@@ -83,11 +82,15 @@ function displayResults() {
 
   // gather data and labels for chart
   var labelArray = [];
-  var dataArray = [];
+  var clicksArray = [];
+  var viewsArray = [];
+
   for (var i = 0; i < Product.all.length; i++) {
+    viewsArray.push(Product.all[i].totalViews);
     labelArray.push(Product.all[i].name);
-    dataArray.push(Product.all[i].totalClicks);
+    clicksArray.push(Product.all[i].totalClicks);
   }
+
   var canvas = document.getElementById('results-chart').getContext('2d');
   Chart.defaults.global.defaultFontColor = '#eee';
 
@@ -98,13 +101,17 @@ function displayResults() {
       labels: labelArray,
       datasets: [
         {
-          label: 'Voting Totals',
+          label: 'Total Votes',
           backgroundColor: 'rgb(0, 210, 170)',
-          data: dataArray
+          data: clicksArray
+        },
+        {
+          label: 'Total Views',
+          backgroundColor: '#CA5188',
+          data: viewsArray
         }
       ]
     },
-
     options: {
       scales: {
         yAxes: [
@@ -127,7 +134,37 @@ function displayResults() {
       }
     }
   });
+  renderTopImages();
+}
 
+// Define handleClicks function that takes in an event
+function handleClick(e) {
+  totalPageClicks++;
+  if (totalPageClicks === 25) {
+    displayResults();
+    renderTopImages();
+    elImgOne.style.pointerEvents = 'none';
+    elImgTwo.style.pointerEvents = 'none';
+    elImgThree.style.pointerEvents = 'none';
+  }
+
+  var imgClicked = e.target.attributes[0].nodeValue;
+
+  Product.all.forEach(function(image) {
+    if (imgClicked === image.name) {
+      image.totalClicks++;
+    }
+  });
+  displayRandomProducts();
+}
+
+// add click event listener to products to calls handleClick
+elImgOne.addEventListener('click', handleClick);
+elImgTwo.addEventListener('click', handleClick);
+elImgThree.addEventListener('click', handleClick);
+
+// display top 3 images
+function renderTopImages() {
   var fav1 = document.getElementById('fav1');
   var fav2 = document.getElementById('fav2');
   var fav3 = document.getElementById('fav3');
@@ -151,28 +188,3 @@ function displayResults() {
   fav3.src = topProductsArr[2].imagePath;
   fav3Name.textContent = topProductsArr[2].name;
 }
-
-// Define handleClicks function that takes in an event
-function handleClick(e) {
-  totalPageClicks++;
-  if (totalPageClicks === 25) {
-    displayResults();
-    elImgOne.style.pointerEvents = 'none';
-    elImgTwo.style.pointerEvents = 'none';
-    elImgThree.style.pointerEvents = 'none';
-  }
-
-  var imgClicked = e.target.attributes[0].nodeValue;
-
-  Product.all.forEach(function(image) {
-    if (imgClicked === image.name) {
-      image.totalClicks++;
-    }
-  });
-  displayRandomProducts();
-}
-
-// add click event listener to products to calls handleClick
-elImgOne.addEventListener('click', handleClick);
-elImgTwo.addEventListener('click', handleClick);
-elImgThree.addEventListener('click', handleClick);
