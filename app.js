@@ -15,28 +15,29 @@ function Product(path, name) {
   Product.all.push(this);
 }
 
-var bagImg = new Product('img/bag.jpg', 'bag');
-var bananaImg = new Product('img/banana.jpg', 'banana');
-var bathroomImg = new Product('img/bathroom.jpg', 'bathroomImg');
-var bootsImg = new Product('img/boots.jpg', 'boots');
-var breakfastImg = new Product('img/breakfast.jpg', 'breakfast');
-var bubblegumImg = new Product('img/bubblegum.jpg', 'bubblegum');
-var chairImg = new Product('img/chair.jpg', 'chair');
-var cthulhuImg = new Product('img/cthulhu.jpg', 'cthulhu');
-var dogDuckImg = new Product('img/dog-duck.jpg', 'dog');
-var dragonImg = new Product('img/dragon.jpg', 'dragon');
-var penImg = new Product('img/pen.jpg', 'pen');
-var petSweepImg = new Product('img/pet-sweep.jpg', 'pet');
-var scissorsImg = new Product('img/scissors.jpg', 'scissors');
-var sharkImg = new Product('img/shark.jpg', 'shark');
-var sweepImg = new Product('img/sweep.png', 'sweep');
-var tauntaunImg = new Product('img/tauntaun.jpg', 'tauntaun');
-var unicornImg = new Product('img/unicorn.jpg', 'unicorn');
-var usbImg = new Product('img/usb.gif', 'usb');
-var waterCanImage = new Product('img/water-can.jpg', 'watercan');
-var wineImg = new Product('img/wine-glass.jpg', 'wine');
+var bagImg = new Product('img/bag.jpg', 'Bag');
+var bananaImg = new Product('img/banana.jpg', 'Banana');
+var bathroomImg = new Product('img/bathroom.jpg', 'Bathroom');
+var bootsImg = new Product('img/boots.jpg', 'Boots');
+var breakfastImg = new Product('img/breakfast.jpg', 'Breakfast');
+var bubblegumImg = new Product('img/bubblegum.jpg', 'Bubblegum');
+var chairImg = new Product('img/chair.jpg', 'Chair');
+var cthulhuImg = new Product('img/cthulhu.jpg', 'Cthulhu');
+var dogDuckImg = new Product('img/dog-duck.jpg', 'Dog');
+var dragonImg = new Product('img/dragon.jpg', 'Dragon');
+var penImg = new Product('img/pen.jpg', 'Pen');
+var petSweepImg = new Product('img/pet-sweep.jpg', 'Pet');
+var scissorsImg = new Product('img/scissors.jpg', 'Scissors');
+var sharkImg = new Product('img/shark.jpg', 'Shark');
+var sweepImg = new Product('img/sweep.png', 'Sweep');
+var tauntaunImg = new Product('img/tauntaun.jpg', 'Tauntaun');
+var unicornImg = new Product('img/unicorn.jpg', 'Unicorn');
+var usbImg = new Product('img/usb.gif', 'Usb');
+var waterCanImage = new Product('img/water-can.jpg', 'Watercan');
+var wineImg = new Product('img/wine-glass.jpg', 'Wine');
 
 // Define displayRandomProduct
+var imagesWrapper = document.getElementById('img-wrap');
 var elImgOne = document.getElementById('image-one');
 var elImgTwo = document.getElementById('image-two');
 var elImgThree = document.getElementById('image-three');
@@ -62,11 +63,8 @@ function getRandomIndex() {
   var random1 = Math.floor(Math.random() * 20);
   var random2 = Math.floor(Math.random() * 20);
   var random3 = Math.floor(Math.random() * 20);
-  console.log(random1, random2, random3);
-  console.log(random1 === random2);
 
   while (random1 === random2 || random2 === random3 || random1 === random3) {
-    console.log(random1, random2, random2);
     random1 = Math.floor(Math.random() * 20);
     random2 = Math.floor(Math.random() * 20);
     random3 = Math.floor(Math.random() * 20);
@@ -77,21 +75,81 @@ function getRandomIndex() {
 }
 
 // Define displayResults function
-var resultsList = document.getElementById('results-list');
 
 function displayResults() {
-  Product.all.forEach(function(image) {
-    var ratio = image.totalClicks / image.totalViews;
-    ratio.toFixed(3);
-    if (isNaN(ratio)) {
-      ratio = 'Never displayed!';
+  var resultsWrap = document.getElementById('results');
+  resultsWrap.classList.remove('ghost');
+  imagesWrapper.className = 'ghost';
+
+  // gather data and labels for chart
+  var labelArray = [];
+  var dataArray = [];
+  for (var i = 0; i < Product.all.length; i++) {
+    labelArray.push(Product.all[i].name);
+    dataArray.push(Product.all[i].totalClicks);
+  }
+  var canvas = document.getElementById('results-chart').getContext('2d');
+  Chart.defaults.global.defaultFontColor = '#eee';
+
+  var chart = new Chart(canvas, {
+    type: 'bar',
+
+    data: {
+      labels: labelArray,
+      datasets: [
+        {
+          label: 'Voting Totals',
+          backgroundColor: 'rgb(0, 210, 170)',
+          data: dataArray
+        }
+      ]
+    },
+
+    options: {
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: '# of Votes',
+              fontColor: 'rgb(0, 210, 170)'
+            }
+          }
+        ]
+      },
+      layout: {
+        padding: {
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 20
+        }
+      }
     }
-    var imageCount = document.createElement('li');
-    imageCount.textContent = `Image ${image.name} times clicked: ${
-      image.totalClicks
-    } - ${ratio}`;
-    resultsList.appendChild(imageCount);
   });
+
+  var fav1 = document.getElementById('fav1');
+  var fav2 = document.getElementById('fav2');
+  var fav3 = document.getElementById('fav3');
+  var fav1Name = document.getElementById('fav1Name');
+  var fav2Name = document.getElementById('fav2Name');
+  var fav3Name = document.getElementById('fav3Name');
+
+  var productsArr = [];
+  Product.all.forEach(function(image) {
+    productsArr.push(image);
+  });
+  productsArr.sort(function(a, b) {
+    return b.totalClicks - a.totalClicks;
+  });
+  var topProductsArr = productsArr.slice(0, 3);
+  fav1.src = topProductsArr[0].imagePath;
+  fav1Name.textContent = topProductsArr[0].name;
+  fav2.src = topProductsArr[1].imagePath;
+  fav2Name.textContent = topProductsArr[1].name;
+
+  fav3.src = topProductsArr[2].imagePath;
+  fav3Name.textContent = topProductsArr[2].name;
 }
 
 // Define handleClicks function that takes in an event
@@ -109,7 +167,6 @@ function handleClick(e) {
   Product.all.forEach(function(image) {
     if (imgClicked === image.name) {
       image.totalClicks++;
-      console.log(image);
     }
   });
   displayRandomProducts();

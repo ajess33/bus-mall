@@ -11,6 +11,7 @@
       href="https://fonts.googleapis.com/css?family=Raleway:400,800"
       rel="stylesheet"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   </head>
   <body>
     <header>
@@ -28,11 +29,20 @@
       </nav>
     </header>
     <main>
-      <section id="results" class="sidebar">
-        <h3>Results</h3>
-        <ul id="results-list"></ul>
+      <section class="sidebar">
+        <p>
+          When other websites give you text, they’re not sending the best.
+          They’re not sending you, they’re sending words that have lots of
+          problems and they’re bringing those problems with us. They’re bringing
+          mistakes. They’re bringing misspellings. They’re typists… And some, I
+          assume, are good words. Lorem Ipsum better hope that there are no
+          "tapes" of our conversations before he starts leaking to the press!
+          Does everybody know that pig named Lorem Ipsum? She's a disgusting
+          pig, right? I'm speaking with myself, number one, because I have a
+          very good brain and I've said a lot of things.
+        </p>
       </section>
-      <section class="images-wrapper">
+      <section class="images-wrapper" id="img-wrap">
         <img
           data-name=""
           id="image-one"
@@ -54,22 +64,29 @@
           src="/"
           alt="random image 3"
         />
-        <script src="app.js"></script>
       </section>
-      <section class="info-wrapper">
-        <p>
-          When other websites give you text, they’re not sending the best.
-          They’re not sending you, they’re sending words that have lots of
-          problems and they’re bringing those problems with us. They’re bringing
-          mistakes. They’re bringing misspellings. They’re typists… And some, I
-          assume, are good words. Lorem Ipsum better hope that there are no
-          "tapes" of our conversations before he starts leaking to the press!
-          Does everybody know that pig named Lorem Ipsum? She's a disgusting
-          pig, right? I'm speaking with myself, number one, because I have a
-          very good brain and I've said a lot of things.
-        </p>
+
+      <section id="results" class="results-wrapper ghost">
+        <h3>Results</h3>
+        <canvas height="500px" width="1000px" id="results-chart"></canvas>
+        <section class="center">
+          <h3>Top 3 Products</h3>
+          <section class="top-images-wrapper">
+            <img class="no-margin-left" id="fav1" src="" alt="favorite image" />
+            <p id="fav1Name"></p>
+          </section>
+          <section class="top-images-wrapper">
+            <img id="fav2" src="" alt="favorite image" />
+            <p id="fav2Name"></p>
+          </section>
+          <section class="top-images-wrapper">
+            <img id="fav3" src="" alt="favorite image" />
+            <p id="fav3Name"></p>
+          </section>
+        </section>
       </section>
     </main>
     <footer><p>© Austin Jess - 2019</p></footer>
+    <script src="app.js"></script>
   </body>
 </html>
