@@ -89,6 +89,8 @@ function displayResults() {
     dataArray.push(Product.all[i].totalClicks);
   }
   var canvas = document.getElementById('results-chart').getContext('2d');
+  Chart.defaults.global.defaultFontColor = '#eee';
+
   var chart = new Chart(canvas, {
     type: 'bar',
 
@@ -110,10 +112,18 @@ function displayResults() {
             scaleLabel: {
               display: true,
               labelString: '# of Votes',
-              fontColor: '#002620'
+              fontColor: 'rgb(0, 210, 170)'
             }
           }
         ]
+      },
+      layout: {
+        padding: {
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 20
+        }
       }
     }
   });
@@ -121,10 +131,10 @@ function displayResults() {
   var fav1 = document.getElementById('fav1');
   var fav2 = document.getElementById('fav2');
   var fav3 = document.getElementById('fav3');
+  var fav1Name = document.getElementById('fav1Name');
+  var fav2Name = document.getElementById('fav2Name');
+  var fav3Name = document.getElementById('fav3Name');
 
-  // dataArray.sort(function(a, b) {
-  //   return b - a;
-  // });
   var productsArr = [];
   Product.all.forEach(function(image) {
     productsArr.push(image);
@@ -134,8 +144,12 @@ function displayResults() {
   });
   var topProductsArr = productsArr.slice(0, 3);
   fav1.src = topProductsArr[0].imagePath;
+  fav1Name.textContent = topProductsArr[0].name;
   fav2.src = topProductsArr[1].imagePath;
+  fav2Name.textContent = topProductsArr[1].name;
+
   fav3.src = topProductsArr[2].imagePath;
+  fav3Name.textContent = topProductsArr[2].name;
 }
 
 // Define handleClicks function that takes in an event
