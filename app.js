@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Define a totalPageClicks variable to keep track of total selections (25)
 var totalPageClicks = 0;
 
