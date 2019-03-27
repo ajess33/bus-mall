@@ -99,6 +99,8 @@ header nav ul li:hover {
   height: 300px;
   margin: 0 15px;
   cursor: pointer;
+  box-shadow: 0 0 5px #00c9aa;
+  padding: 10px;
 }
 
 .image:hover {
@@ -142,6 +144,8 @@ canvas {
   height: 200px;
   width: 200px;
   margin: 0 20px;
+  box-shadow: 0 0 5px #00c9aa;
+  padding: 10px;
 }
 
 .results-wrapper .top-images-wrapper {
