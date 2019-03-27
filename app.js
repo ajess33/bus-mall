@@ -58,7 +58,6 @@ function displayRandomProducts() {
   elImgThree.setAttribute('data-name', Product.all[random[2]].name);
   Product.all[random[2]].totalViews += 1;
 }
-displayRandomProducts();
 
 function getRandomIndex() {
   var random1 = Math.floor(Math.random() * 20);
@@ -86,10 +85,19 @@ function displayResults() {
   var clicksArray = [];
   var viewsArray = [];
 
-  for (var i = 0; i < Product.all.length; i++) {
-    viewsArray.push(Product.all[i].totalViews);
-    labelArray.push(Product.all[i].name);
-    clicksArray.push(Product.all[i].totalClicks);
+  if (!localStorage.getItem('clicks')) {
+    for (var i = 0; i < Product.all.length; i++) {
+      viewsArray.push(Product.all[i].totalViews);
+      labelArray.push(Product.all[i].name);
+      clicksArray.push(Product.all[i].totalClicks);
+    }
+    localStorage.setItem('labels', JSON.stringify(labelArray));
+    localStorage.setItem('clicks', JSON.stringify(clicksArray));
+    localStorage.setItem('views', JSON.stringify(viewsArray));
+  } else {
+    labelArray = JSON.parse(localStorage.getItem('labels'));
+    clicksArray = JSON.parse(localStorage.getItem('clicks'));
+    viewsArray = JSON.parse(localStorage.getItem('views'));
   }
 
   var canvas = document.getElementById('results-chart').getContext('2d');
@@ -137,11 +145,11 @@ function displayResults() {
   });
   renderTopImages();
 }
-
 // Define handleClicks function that takes in an event
 function handleClick(e) {
   totalPageClicks++;
   if (totalPageClicks === 25) {
+    localStorage.setItem('completed', JSON.stringify(true));
     displayResults();
     renderTopImages();
     elImgOne.style.pointerEvents = 'none';
@@ -181,11 +189,26 @@ function renderTopImages() {
     return b.totalClicks - a.totalClicks;
   });
   var topProductsArr = productsArr.slice(0, 3);
-  fav1.src = topProductsArr[0].imagePath;
-  fav1Name.textContent = topProductsArr[0].name;
-  fav2.src = topProductsArr[1].imagePath;
-  fav2Name.textContent = topProductsArr[1].name;
+  // set localStorage for top 3 products
+  localStorage.setItem('topProducts', JSON.stringify(topProductsArr));
 
-  fav3.src = topProductsArr[2].imagePath;
-  fav3Name.textContent = topProductsArr[2].name;
+  var localTopThree = JSON.parse(localStorage.getItem('topProducts'));
+
+  fav1.src = localTopThree[0].imagePath;
+  fav1Name.textContent = localTopThree[0].name;
+  fav2.src = localTopThree[1].imagePath;
+  fav2Name.textContent = localTopThree[1].name;
+
+  fav3.src = localTopThree[2].imagePath;
+  fav3Name.textContent = localTopThree[2].name;
 }
+
+function checkStorage() {
+  var alreadyCompleted = JSON.parse(localStorage.getItem('completed'));
+  if (alreadyCompleted) {
+    displayResults();
+  } else {
+    displayRandomProducts();
+  }
+}
+checkStorage();
