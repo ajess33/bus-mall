@@ -6,6 +6,7 @@ var totalPageClicks = 0;
 Product.all = [];
 
 // Define Product constructor
+
 function Product(path, name) {
   this.totalClicks = 0;
   this.totalViews = 0;
