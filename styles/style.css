@@ -78,6 +78,27 @@ header nav ul li:hover {
 /* MAIN CONTENT */
 /* =================== */
 
+main h2 {
+  text-align: left;
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 30px 48px;
+  display: inline-block;
+  color: #002620;
+}
+
+main .counter {
+  display: inline-block;
+  margin-left: 500px;
+  color: #002620;
+}
+
+main .counter #votes-counter {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #00c9aa;
+}
+
 .sidebar {
   float: left;
   width: 300px;
