@@ -1,6 +1,9 @@
+// the first thing evaluated in sum(sum(a, b), c) are the aruguments and the sum function itself
+
 /* eslint-disable no-unused-vars */
 // Define a totalPageClicks variable to keep track of total selections (25)
-var totalPageClicks = 0;
+var totalPageClicks = 25;
+var pageCounter = document.getElementById('votes-counter');
 
 // Define allProducts array
 Product.all = [];
@@ -78,8 +81,10 @@ function getRandomIndex() {
 // Define displayResults function
 function displayResults() {
   var resultsWrap = document.getElementById('results');
+  var banner = document.getElementById('banner');
   resultsWrap.classList.remove('ghost');
   imagesWrapper.className = 'ghost';
+  banner.className = 'ghost';
 
   // gather data and labels for chart
   var labelArray = [];
@@ -148,8 +153,10 @@ function displayResults() {
 }
 // Define handleClicks function that takes in an event
 function handleClick(e) {
-  totalPageClicks++;
-  if (totalPageClicks === 25) {
+  totalPageClicks--;
+  pageCounter.textContent = totalPageClicks;
+
+  if (totalPageClicks === 0) {
     localStorage.setItem('completed', JSON.stringify(true));
     displayResults();
     renderTopImages();
